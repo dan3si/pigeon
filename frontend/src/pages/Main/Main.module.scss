@@ -1,0 +1,43 @@
+.page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+}
+
+.flyBtn {
+    height: 100px;
+    width: 300px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 32px;
+    color: white;
+    outline: none;
+    border: 2px solid #62b8f5;
+    background-color: #62b8f5;
+    
+    &:hover {
+        background-color: white;
+        color: #62b8f5;
+    }
+}
+
+.sendPackageBtn {
+    height: 100px;
+    width: 300px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 32px;
+    color: white;
+    border: 2px solid #f78fda;
+    background-color: #f78fda;
+
+    &:hover {
+        background-color: white;
+        color: #f78fda;
+    }
+}
