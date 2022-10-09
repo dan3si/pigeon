@@ -21,7 +21,7 @@ const AddRoute = () => {
         return (
             <div className={styles.addRoute}>
                 <div>Спасибо, ваш маршрут добавлен!</div>
-                <Link to="/">
+                <Link to="/pigeon">
                     <button>На главную</button>
                 </Link>
             </div>
