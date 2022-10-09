@@ -15,7 +15,7 @@ function App() {
         <Header />
 
         <BrowserRoutes>
-          <Route index element={<Main />} />
+          <Route path="/pigeon" element={<Main />} />
           <Route path="/pigeon/routes" element={<Routes />} />
           <Route path="/pigeon/add_route" element={<AddRoute />} />
         </BrowserRoutes>
