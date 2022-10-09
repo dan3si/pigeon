@@ -1,0 +1,9 @@
+@import '../../App.module.scss';
+
+.footer {
+    @extend %container;
+    height: $footerHeight;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

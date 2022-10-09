@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Select from 'react-select'
 import cities from '../../data/cities'
+import { API_URL } from '../../settings'
+import styles from './AddRoute.module.scss'
+import arrowIcon from '../../images/arrow.png'
 
 const AddRoute = () => {
     const citySelectOptions = cities.map(city => ({ value: city, label: city }))
@@ -16,7 +19,7 @@ const AddRoute = () => {
 
     if (routeIsCreated) {
         return (
-            <div>
+            <div className={styles.addRoute}>
                 <div>Спасибо, ваш маршрут добавлен!</div>
                 <Link to="/">
                     <button>На главную</button>
@@ -26,52 +29,61 @@ const AddRoute = () => {
     }
 
     return (
-        <div>
-            <div>
+        <div className={styles.addRoute}>
+            <div className={styles.routeSelectsWrapper}>
                 <Select
+                    className={styles.routeSelect}
                     options={citySelectOptions}
-                    placeholder="Лечу из:"
+                    placeholder="Город отправления:"
                     value={from}
                     onChange={value => setFrom(value)}
                 />
-            </div>
 
-            <div>
+                <div className={styles.routeArrowWrapper}>
+                    <img
+                        className={styles.routeArrow}
+                        src={arrowIcon}
+                    />
+                </div>
+
                 <Select
+                    className={styles.routeSelect}
                     options={citySelectOptions}
-                    placeholder="Лечу в:"
+                    placeholder="Город прибытия:"
                     value={to}
                     onChange={value => setTo(value)}
                 />
             </div>
 
-            <div>
+            <div className={styles.row}>
                 <input
+                    className={styles.input}
                     type="date"
                     onChange={e => setDate(e.target.value)}
                 />
             </div>
 
-            <div>
+            <div className={styles.row}>
                 <input
-                    placeholder="имя:"
+                    className={styles.input}
+                    placeholder="Имя:"
                     onChange={e => setName(e.target.value)}
                     value={name}
                 />
-            </div>
 
-            <div>
                 <input
-                    placeholder="телефон:"
+                    className={styles.input}
+                    placeholder="Телефон:"
                     onChange={e => setPhone(e.target.value)}
                     value={phone}
                 />
             </div>
 
-            <div>
+            <div className={styles.row}>
                 <button
+                    className={styles.submitBtn}
                     onClick={async () => {
-                        const res = await fetch('http://localhost:80/addRoute', {
+                        const res = await fetch(`${API_URL}/addRoute`, {
                             method: 'POST',
                             body: JSON.stringify({
                                 from: from.value,

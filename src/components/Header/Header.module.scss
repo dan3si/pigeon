@@ -1,0 +1,24 @@
+@import '../../App.module.scss';
+
+.header {
+    @extend %container;
+    height: $headerHeight;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 1;
+    border-bottom: 1px solid black;
+}
+
+.logo {
+    width: 50px;
+    transition: 0.5s;
+
+    &:hover {
+        transform: scale(1.03);
+    }
+}
