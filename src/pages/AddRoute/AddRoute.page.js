@@ -1,29 +1,108 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import cn from 'classnames'
 import Select from 'react-select'
+import LoadingAnimation from '../../components/LoadingAnimation'
 import cities from '../../data/cities'
 import { API_URL } from '../../settings'
 import styles from './AddRoute.module.scss'
-import arrowIcon from '../../images/arrow.png'
+import arrowIcon from '../../images/icons/arrow.png'
 
 const AddRoute = () => {
     const citySelectOptions = cities.map(city => ({ value: city, label: city }))
 
     const [routeIsCreated, setRouteIsCreated] = useState(false)
+    const [dataIsLoading, setDataIsLoading] = useState(false)
 
     const [from, setFrom] = useState(citySelectOptions[0])
     const [to, setTo] = useState(citySelectOptions[1])
-    const [date, setDate] = useState(null)
+    const [date, setDate] = useState('')
+    const [dateHasErrors, setDateHasErrors] = useState(false)
     const [name, setName] = useState('')
+    const [nameHasErrors, setNameHasErrors] = useState(false)
     const [phone, setPhone] = useState('')
+    const [phoneHasErrors, setPhoneHasErrors] = useState(false)
+    const [note, setNote] = useState('')
+
+    const checkDateHasErrors = () => {
+        if (date === '') {
+            return true
+        }
+
+        return false
+    }
+
+    const checkNameHasErrors = () => {
+        if (name === '') {
+            return true
+        }
+
+        return false
+    }
+
+    const checkPhoneHasErrors = () => {
+        if (phone.length < 10) {
+            return true
+        }
+
+        return false
+    }
+
+    const submitHandler = async () => {
+        setDateHasErrors(checkDateHasErrors())
+        setNameHasErrors(checkNameHasErrors())
+        setPhoneHasErrors(checkPhoneHasErrors())
+
+        if (checkDateHasErrors() || checkNameHasErrors() || checkPhoneHasErrors()) {
+            return
+        }
+
+        setDataIsLoading(true)
+
+        try {
+            const res = await fetch(`${API_URL}/routes`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    from: from.value,
+                    to: to.value,
+                    date,
+                    name,
+                    phone,
+                    note
+                }),
+                headers: { 'Content-Type': 'application/json' }
+            })
+
+            const status = await res.text()
+
+            if (status === 'success') {
+                setRouteIsCreated(true)
+            }
+        } catch {
+            alert('Ошибка! Маршрут не был добавлен, попробуйте позже')     
+        } finally {
+            setDataIsLoading(false)
+        }
+    }
+
+    if (dataIsLoading) {
+        return (
+            <div className={styles.addRoute}>
+                <LoadingAnimation />
+            </div>
+        )
+    }
 
     if (routeIsCreated) {
         return (
             <div className={styles.addRoute}>
-                <div>Спасибо, ваш маршрут добавлен!</div>
-                <Link to="/pigeon">
-                    <button>На главную</button>
-                </Link>
+                <div className={styles.succesInscription}>Спасибо, ваш маршрут добавлен!</div>
+
+                <div className={styles.homeBtnWrapper}>
+                    <Link to="/pigeon">
+                        <button className={styles.homeBtn}>На главную</button>
+                    </Link>
+                </div>  
             </div>
         )
     }
@@ -57,49 +136,61 @@ const AddRoute = () => {
 
             <div className={styles.row}>
                 <input
-                    className={styles.input}
+                    className={cn(styles.input, { [styles.inputError]: dateHasErrors })}
                     type="date"
-                    onChange={e => setDate(e.target.value)}
+                    min={new Date().toJSON().slice(0,10)}
+                    onChange={e => {
+                        setDate(e.target.value)
+                        setDateHasErrors(false)
+                    }}
                 />
             </div>
 
             <div className={styles.row}>
                 <input
-                    className={styles.input}
+                    className={cn(styles.input, { [styles.inputError]: nameHasErrors })}
                     placeholder="Имя:"
-                    onChange={e => setName(e.target.value)}
+                    onChange={e => {
+                        setName(e.target.value)
+                        setNameHasErrors(false)
+                    }}
                     value={name}
                 />
 
                 <input
-                    className={styles.input}
+                    className={cn(styles.input, { [styles.inputError]: phoneHasErrors })}
                     placeholder="Телефон:"
-                    onChange={e => setPhone(e.target.value)}
+                    onChange={e => {
+                        for (const symbol of e.target.value) {
+                            if (!'1234567890+()'.includes(symbol)) {
+                                return
+                            }
+                        }
+
+                        if (e.target.value.length > 14) {
+                            return
+                        }
+
+                        setPhone(e.target.value)
+                        setPhoneHasErrors(false)
+                    }}
                     value={phone}
                 />
             </div>
 
             <div className={styles.row}>
+                <textarea
+                    className={styles.input}
+                    placeholder="Примечание*:"
+                    onChange={e => setNote(e.target.value)}
+                    value={note}
+                ></textarea>
+            </div>
+
+            <div className={styles.row}>
                 <button
                     className={styles.submitBtn}
-                    onClick={async () => {
-                        const res = await fetch(`${API_URL}/addRoute`, {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                from: from.value,
-                                to: to.value,
-                                date,
-                                name,
-                                phone
-                            }),
-                            headers: { 'Content-Type': 'application/json' }
-                        })
-                        const status = await res.text()
-
-                        if (status === 'success') {
-                            setRouteIsCreated(true)
-                        }
-                    }}
+                    onClick={submitHandler}
                 >
                     Создать
                 </button>

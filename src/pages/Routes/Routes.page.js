@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import { API_URL } from '../../settings'
 import cities from '../../data/cities'
 import Select from 'react-select'
+import LoadingAnimation from '../../components/LoadingAnimation'
 import styles from './Routes.module.scss'
-import arrowIcon from '../../images/arrow.png'
+import arrowIcon from '../../images/icons/arrow.png'
 
 const Routes = () => {
     const citySelectOptions = [
@@ -12,18 +13,56 @@ const Routes = () => {
     ]
 
     const [routes, setRoutes] = useState([])
+    const [routesAreLoading, setRoutesAreLoading] = useState(false)
     const [from, setFrom] = useState(citySelectOptions[0])
     const [to, setTo] = useState(citySelectOptions[0])
 
     const getRoutes = async () => {
-        const res = await fetch(`${API_URL}/routes?from=${from.value}&to=${to.value}`)
-        const data = await res.json()
-        setRoutes(data)
+        setRoutesAreLoading(true)
+
+        try {
+            const res = await fetch(`${API_URL}/routes?from=${from.value}&to=${to.value}`)
+            const data = await res.json()
+            setRoutes(data)
+        } catch {
+            alert('Ошибка! Не удалось загрузить маршруты, попробуйте позже')
+        } finally {
+            setRoutesAreLoading(false)
+        }
+    }
+
+    const formatDate = (date) => {
+        const months = {
+            '01': 'января',
+            '02': 'февраля',
+            '03': 'марта',
+            '04': 'апреля',
+            '05': 'мая',
+            '06': 'июня',
+            '07': 'июля',
+            '08': 'августа',
+            '09': 'сентября',
+            '10': 'октября',
+            '11': 'ноября',
+            '12': 'декабря',
+        }
+
+        const [year, month, day] = date.split('-')
+
+        return `${day} ${months[month]} ${year}`
     }
 
     useEffect(() => {
         getRoutes()
     }, [from, to])
+
+    if (routesAreLoading) {
+        return (
+            <div className={styles.routes}>
+                <LoadingAnimation />
+            </div>
+        )
+    }
 
     return (
         <div className={styles.routes}>
@@ -53,7 +92,7 @@ const Routes = () => {
             </div>
 
             <div className={styles.routesWrapper}>
-                {routes.map(({ id, from, to, date, name, phone }) => (
+                {routes.map(({ id, from, to, date, name, phone, note }) => (
                     <div key={id} className={styles.route}>
                         <div className={styles.row}>
                             <div className={styles.field}>Откуда: {from}</div>
@@ -61,7 +100,7 @@ const Routes = () => {
                         </div>
                         
                         <div className={styles.row}>
-                            <div className={styles.field}>Дата: {date}</div>
+                            <div className={styles.field}>Дата: {formatDate(date)}</div>
                         </div>
                         
                         <div className={styles.row}>
@@ -75,6 +114,12 @@ const Routes = () => {
                                 </a>
                             </div>
                         </div>
+
+                        {note !== '' && (
+                            <div className={styles.row}>
+                                <div className={styles.field}>Примечание: {note}</div>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>

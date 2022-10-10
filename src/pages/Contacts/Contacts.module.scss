@@ -1,0 +1,28 @@
+@import '../../App.module.scss';
+
+.contacts {
+    @extend %container;
+    min-height: calc(100vh - $headerHeight - $footerHeight);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contactLink {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: inherit;
+    text-decoration: none;
+    font-size: 20px;
+
+    &:first-child {
+        margin-top: 64px;
+    }
+
+
+    img {
+        width: 16px;
+    }
+}

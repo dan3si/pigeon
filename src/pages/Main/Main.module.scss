@@ -9,6 +9,27 @@
     gap: 50px;
 }
 
+.contactsLink {
+    text-decoration: none;
+}
+
+.contactsWrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: black;
+    transition: 0.3s;
+    font-size: 18px;
+
+    &:hover {
+        color: #555555;
+    }
+}
+
+.contactsIcon {
+    width: 16px;
+}
+
 .flyBtn {
     height: 100px;
     width: 300px;

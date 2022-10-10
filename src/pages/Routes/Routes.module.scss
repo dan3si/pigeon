@@ -53,6 +53,7 @@
     padding: 6px;
     display: flex;
     align-items: center;
+    overflow: hidden;
 
     &:nth-child(even) {
         border-left: 1px solid black;
