@@ -1,6 +1,6 @@
 import styles from './Contacts.module.scss'
 
-import phoneIcon from '../../images/icons/phone.png'
+//import phoneIcon from '../../images/icons/phone.png'
 import mailIcon from '../../images/icons/mail.png'
 import instagramIcon from '../../images/icons/instagram.png'
 
@@ -16,13 +16,13 @@ const Contacts = () => {
                     dennis.priadka@gmail.com
                 </a>
 
-                <a
+                {/*<a
                     href="tel: +17865381388"
                     className={styles.contactLink}
                 >
                     <img src={phoneIcon} />
                     +1 786 538 1388
-                </a>
+                </a>*/}
 
                 <a
                     href="https://www.instagram.com/dan3si/"

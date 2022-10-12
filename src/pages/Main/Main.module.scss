@@ -1,6 +1,7 @@
 @import '../../App.module.scss';
 
 .page {
+    position: relative;
     min-height: calc(100vh - $headerHeight - $footerHeight);
     display: flex;
     flex-direction: column;
@@ -11,18 +12,22 @@
 
 .contactsLink {
     text-decoration: none;
+    position: absolute;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .contactsWrapper {
     display: flex;
     align-items: center;
     gap: 4px;
-    color: black;
+    color: $color-black;
     transition: 0.3s;
     font-size: 18px;
 
     &:hover {
-        color: #555555;
+        color: $color-grey;
     }
 }
 
@@ -30,49 +35,41 @@
     width: 16px;
 }
 
-.flyBtn {
-    height: 100px;
-    width: 300px;
+%mainPageButton {
+    height: 80px;
+    width: 240px;
     border-radius: 100px;
     cursor: pointer;
     transition: 0.3s;
-    font-size: 32px;
-    color: white;
+    font-size: 26px;
     outline: none;
-    border: 2px solid #62b8f5;
-    background-color: #62b8f5;
-    
-    &:hover {
-        background-color: white;
-        color: #62b8f5;
-    }
+    border: 2px solid $color-black;
 
     @media (max-width: 370px) {
         height: 60px;
         width: 180px;
-        font-size: 24px;
+        font-size: 18px;
+    }
+}
+
+.flyBtn {
+    @extend %mainPageButton;
+    background-color: transparent;
+    color: $color-black;
+
+    &:hover {
+        background-color: $color-black;
+        color: white;
     }
 }
 
 .sendPackageBtn {
-    height: 100px;
-    width: 300px;
-    border-radius: 100px;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 32px;
+    @extend %mainPageButton;
     color: white;
-    border: 2px solid #f78fda;
-    background-color: #f78fda;
+    background-color: $color-black;
 
     &:hover {
-        background-color: white;
-        color: #f78fda;
-    }
-
-    @media (max-width: 370px) {
-        height: 60px;
-        width: 180px;
-        font-size: 16px;
+        background-color: transparent;
+        color: $color-black;
     }
 }

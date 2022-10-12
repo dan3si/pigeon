@@ -77,6 +77,8 @@ const AddRoute = () => {
 
             if (status === 'success') {
                 setRouteIsCreated(true)
+            } else {
+                throw new Error('Route was not created')
             }
         } catch {
             alert('Ошибка! Маршрут не был добавлен, попробуйте позже')     
@@ -110,13 +112,17 @@ const AddRoute = () => {
     return (
         <div className={styles.addRoute}>
             <div className={styles.routeSelectsWrapper}>
-                <Select
-                    className={styles.routeSelect}
-                    options={citySelectOptions}
-                    placeholder="Город отправления:"
-                    value={from}
-                    onChange={value => setFrom(value)}
-                />
+                <div className={styles.inputWrapper}>
+                    Откуда:
+                    <Select
+                        isSearchable
+                        className={styles.routeSelect}
+                        options={citySelectOptions}
+                        placeholder="Город отправления:"
+                        value={from}
+                        onChange={value => setFrom(value)}
+                    />
+                </div>
 
                 <div className={styles.routeArrowWrapper}>
                     <img
@@ -125,66 +131,89 @@ const AddRoute = () => {
                     />
                 </div>
 
-                <Select
-                    className={styles.routeSelect}
-                    options={citySelectOptions}
-                    placeholder="Город прибытия:"
-                    value={to}
-                    onChange={value => setTo(value)}
-                />
+                <div className={styles.inputWrapper}>
+                    Куда:
+                    <Select
+                        isSearchable
+                        className={styles.routeSelect}
+                        options={citySelectOptions}
+                        placeholder="Город прибытия:"
+                        value={to}
+                        onChange={value => setTo(value)}
+                    />
+                </div>
             </div>
 
             <div className={styles.row}>
-                <input
-                    className={cn(styles.input, { [styles.inputError]: dateHasErrors })}
-                    type="date"
-                    min={new Date().toJSON().slice(0,10)}
-                    onChange={e => {
-                        setDate(e.target.value)
-                        setDateHasErrors(false)
-                    }}
-                />
-            </div>
-
-            <div className={styles.row}>
-                <input
-                    className={cn(styles.input, { [styles.inputError]: nameHasErrors })}
-                    placeholder="Имя:"
-                    onChange={e => {
-                        setName(e.target.value)
-                        setNameHasErrors(false)
-                    }}
-                    value={name}
-                />
-
-                <input
-                    className={cn(styles.input, { [styles.inputError]: phoneHasErrors })}
-                    placeholder="Телефон:"
-                    onChange={e => {
-                        for (const symbol of e.target.value) {
-                            if (!'1234567890+()'.includes(symbol)) {
+                <div className={styles.inputWrapper}>
+                    Выберите дату полёта:
+                    <input
+                        className={cn(styles.input, { [styles.inputError]: dateHasErrors })}
+                        type="date"
+                        value={date}
+                        min={new Date().toJSON().slice(0,10)}
+                        onChange={e => {
+                            if (new Date(e.target.value).getTime() < Date.now() - 86400000) {
+                                setDateHasErrors(true)
                                 return
                             }
-                        }
 
-                        if (e.target.value.length > 14) {
-                            return
-                        }
-
-                        setPhone(e.target.value)
-                        setPhoneHasErrors(false)
-                    }}
-                    value={phone}
-                />
+                            setDate(e.target.value)
+                            setDateHasErrors(false)
+                        }}
+                    />
+                </div>
             </div>
 
             <div className={styles.row}>
-                <textarea
-                    className={styles.input}
-                    placeholder="Примечание*:"
-                    onChange={e => setNote(e.target.value)}
-                    value={note}
-                ></textarea>
+                <div className={styles.inputWrapper}>
+                    Ваше имя:
+                    <input
+                        className={cn(styles.input, { [styles.inputError]: nameHasErrors })}
+                        placeholder="Имя:"
+                        onChange={e => {
+                            setName(e.target.value)
+                            setNameHasErrors(false)
+                        }}
+                        value={name}
+                    />
+                </div>
+                
+                <div className={styles.inputWrapper}>
+                    Ваш телефон:
+                    <input
+                        className={cn(styles.input, { [styles.inputError]: phoneHasErrors })}
+                        placeholder="Телефон:"
+                        onChange={e => {
+                            for (const symbol of e.target.value) {
+                                if (!'1234567890+()'.includes(symbol)) {
+                                    return
+                                }
+                            }
+
+                            if (e.target.value.length > 14) {
+                                return
+                            }
+
+                            setPhone(e.target.value)
+                            setPhoneHasErrors(false)
+                        }}
+                        value={phone}
+                    />
+                </div>
+            </div>
+
+            <div className={styles.row}>
+                <div className={styles.inputWrapper}>
+                    Примечание (необязательно):
+                    <textarea
+                        rows="10"
+                        className={styles.input}
+                        placeholder="Примечание*:"
+                        onChange={e => setNote(e.target.value)}
+                        value={note}
+                    ></textarea>
+                </div>
             </div>
 
             <div className={styles.row}>

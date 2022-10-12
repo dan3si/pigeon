@@ -1,5 +1,8 @@
 $headerHeight: 64px;
 $footerHeight: 64px;
+$color-black: #333333;
+$color-grey: #777777;
+$color-light-grey: #b3b3b3;
 
 %container {
   padding: 10px 20px;
@@ -13,8 +16,7 @@ $footerHeight: 64px;
 
 .app {
   position: relative;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
   max-width: 450px;
   margin: 0 auto;
+  color: $color-black;
 }
