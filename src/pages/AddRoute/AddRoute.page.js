@@ -20,6 +20,8 @@ const AddRoute = () => {
     const [dateHasErrors, setDateHasErrors] = useState(false)
     const [name, setName] = useState('')
     const [nameHasErrors, setNameHasErrors] = useState(false)
+    const [telegram, setTelegram] = useState('')
+    const [telegramHasErrors, setTelegramHasErrors] = useState(false)
     const [phone, setPhone] = useState('')
     const [phoneHasErrors, setPhoneHasErrors] = useState(false)
     const [note, setNote] = useState('')
@@ -40,20 +42,31 @@ const AddRoute = () => {
         return false
     }
 
-    const checkPhoneHasErrors = () => {
-        if (phone.length < 10) {
+    const checkTelegramHasErrors = () => {
+        if (telegram === '') {
             return true
         }
 
         return false
     }
 
+    const checkPhoneHasErrors = () => {
+        if (phone === '') {
+            return false
+        } else if (phone.length < 10) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     const submitHandler = async () => {
         setDateHasErrors(checkDateHasErrors())
         setNameHasErrors(checkNameHasErrors())
+        setTelegramHasErrors(checkTelegramHasErrors())
         setPhoneHasErrors(checkPhoneHasErrors())
 
-        if (checkDateHasErrors() || checkNameHasErrors() || checkPhoneHasErrors()) {
+        if (checkDateHasErrors() || checkNameHasErrors() || checkPhoneHasErrors() || checkTelegramHasErrors()) {
             return
         }
 
@@ -67,6 +80,7 @@ const AddRoute = () => {
                     to: to.value,
                     date,
                     name,
+                    telegram,
                     phone,
                     note
                 }),
@@ -178,12 +192,25 @@ const AddRoute = () => {
                         value={name}
                     />
                 </div>
+
+                <div className={styles.inputWrapper}>
+                    Ваш telegram nickname:
+                    <input
+                        className={cn(styles.input, { [styles.inputError]: telegramHasErrors })}
+                        placeholder="@yournickname:"
+                        onChange={e => {
+                            setTelegram(e.target.value)
+                            setTelegramHasErrors(false)
+                        }}
+                        value={telegram}
+                    />
+                </div>
                 
                 <div className={styles.inputWrapper}>
-                    Ваш телефон:
+                    Ваш номер телефона (необязательно):
                     <input
                         className={cn(styles.input, { [styles.inputError]: phoneHasErrors })}
-                        placeholder="Телефон:"
+                        placeholder="Телефон*:"
                         onChange={e => {
                             for (const symbol of e.target.value) {
                                 if (!'1234567890+()'.includes(symbol)) {
