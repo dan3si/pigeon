@@ -105,16 +105,23 @@ const Routes = () => {
 
                         <div className={styles.row}>
                             <div className={styles.field}>Имя: {name}</div>
-                            <div className={styles.field}>Telegram: {telegram}</div>
-                            
+                            <div className={styles.field}>
+                                <a
+                                    href={`https://t.me/${telegram?.replace(/@/, '')}`}
+                                    className={styles.fieldLink}
+                                    target="_blank"
+                                >
+                                    Telegram: {telegram}
+                                </a>
+                            </div> 
                         </div>
 
                         {phone !== '' && (
                             <div className={styles.row}>
                                 <div className={styles.field}>
                                     <a
-                                        href={'tel: ' + phone}
-                                        className={styles.phoneLink}
+                                        href={`tel:  ${phone}`}
+                                        className={styles.fieldLink}
                                     >
                                         Телефон: {phone}
                                     </a>

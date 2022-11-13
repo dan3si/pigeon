@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import cn from 'classnames'
 import Select from 'react-select'
@@ -100,6 +100,10 @@ const AddRoute = () => {
             setDataIsLoading(false)
         }
     }
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [routeIsCreated])
 
     if (dataIsLoading) {
         return (
