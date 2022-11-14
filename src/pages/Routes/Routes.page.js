@@ -67,13 +67,16 @@ const Routes = () => {
     return (
         <div className={styles.routes}>
             <div className={styles.routeSelectsWrapper}>
-                <Select
-                    className={styles.routeSelect}
-                    options={citySelectOptions}
-                    placeholder="Город отправления:"
-                    value={from}
-                    onChange={value => setFrom(value)}
-                />
+                <div className={styles.inputWrapper}>
+                    Откуда:
+                    <Select
+                        className={styles.routeSelect}
+                        options={citySelectOptions}
+                        placeholder="Город отправления:"
+                        value={from}
+                        onChange={value => setFrom(value)}
+                    />
+                </div>
 
                 <div className={styles.routeArrowWrapper}>
                     <img
@@ -82,13 +85,16 @@ const Routes = () => {
                     />
                 </div>
 
-                <Select
-                    className={styles.routeSelect}
-                    options={citySelectOptions}
-                    placeholder="Город прибытия:"
-                    value={to}
-                    onChange={value => setTo(value)}
-                />
+                <div className={styles.inputWrapper}>
+                    Куда:
+                    <Select
+                        className={styles.routeSelect}
+                        options={citySelectOptions}
+                        placeholder="Город прибытия:"
+                        value={to}
+                        onChange={value => setTo(value)}
+                    />
+                </div>
             </div>
 
             <div className={styles.routesWrapper}>
